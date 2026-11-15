@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10251f">
+<meta name="description" content="Time Counter — staff attendance and shift tracking">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Time Counter</title>
+<style>
+:root{--bg:#f3f6f4;--card:#fff;--ink:#17231e;--muted:#718078;--green:#16834b;--red:#c84b4b;--line:#e5ebe7;--dark:#10251f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:var(--dark);color:white;padding:22px 18px 26px;border-radius:0 0 24px 24px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:23px;font-weight:800;letter-spacing:-.5px}.lang{background:#ffffff1c;color:#fff;border:1px solid #ffffff40;border-radius:12px;padding:9px 12px;font-weight:700}
+.sub{color:#c2d3ca;font-size:13px;margin-top:5px}.wrap{max-width:620px;margin:auto;padding:16px 14px 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 4px 16px #10251f08}
+.label{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.clock{font-size:42px;font-weight:800;letter-spacing:-1.5px;margin:6px 0 0;font-variant-numeric:tabular-nums}
+.status{display:inline-flex;align-items:center;gap:7px;border-radius:99px;padding:7px 11px;font-size:13px;font-weight:700;background:#e9f6ee;color:#167342;margin-top:10px}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}
+button{font:inherit;cursor:pointer}.action{border:0;border-radius:14px;padding:16px 10px;font-weight:800;color:white;background:var(--green);min-height:56px}.action.out{background:var(--red)}.action:disabled{opacity:.35;cursor:not-allowed}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#f7faf8;border-radius:14px;padding:13px}.stat strong{display:block;font-size:23px;font-variant-numeric:tabular-nums}.stat span{font-size:12px;color:var(--muted)}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.sectionhead h2{font-size:17px;margin:0}.smallbtn{border:1px solid var(--line);background:white;border-radius:10px;padding:8px 10px;font-weight:700;color:var(--ink)}
+.entry{padding:13px 0;border-top:1px solid var(--line)}.entry:first-child{border-top:0}.entrytop{display:flex;justify-content:space-between;gap:8px;font-weight:700}.entrymeta{color:var(--muted);font-size:13px;margin-top:5px}.hours{color:var(--green);font-weight:800;white-space:nowrap}
+input,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:#fff;color:var(--ink)}textarea{resize:vertical;min-height:70px}.field{margin-top:12px}.field label{display:block;font-size:13px;color:var(--muted);font-weight:700;margin-bottom:6px}
+.empty{text-align:center;color:var(--muted);padding:20px 8px;font-size:14px}.foot{text-align:center;color:var(--muted);font-size:12px;padding:8px}
+.notice{background:#fff7e6;border:1px solid #f1dfb7;border-radius:12px;padding:12px;color:#79551b;font-size:13px;line-height:1.45;margin-bottom:14px}
+@media(min-width:560px){.wrap{padding-top:22px}.clock{font-size:50px}}
+</style>
+</head>
+<body>
+<header><div class="top"><div><div class="brand">⏱ Time Counter</div><div class="sub" data-i="tagline">Simple staff attendance tracker</div></div><button class="lang" id="langBtn">РУС</button></div></header>
+<main class="wrap">
+<div class="notice" data-i="localNotice">This first version saves records on this device only. It is not yet shared with your manager or coworkers.</div>
+<section class="card">
+ <div class="label" data-i="currentTime">Current time</div>
+ <div class="clock" id="now">--:--:--</div>
+ <div class="status" id="status"><span class="dot"></span><span data-i="notWorking">Not on shift</span></div>
+ <div class="actions">
+  <button class="action" id="inBtn" data-i="clockIn">I'm here</button>
+  <button class="action out" id="outBtn" data-i="clockOut" disabled>I'm leaving</button>
+ </div>
+ <div class="field"><label for="note" data-i="noteLabel">Note (optional)</label><textarea id="note" data-i-placeholder="notePlaceholder" placeholder="Add a note for this shift..."></textarea></div>
+</section>
+<section class="card">
+ <div class="sectionhead"><h2 data-i="summary">Work summary</h2><span class="label" id="monthLabel"></span></div>
+ <div class="grid">
+  <div class="stat"><strong id="todayTotal">0h 00m</strong><span data-i="today">Today</span></div>
+  <div class="stat"><strong id="monthTotal">0h 00m</strong><span data-i="thisMonth">This month</span></div>
+ </div>
+</section>
+<section class="card">
+ <div class="sectionhead"><h2 data-i="history">Attendance history</h2><button class="smallbtn" id="exportBtn" data-i="export">Export CSV</button></div>
+ <div id="historyList" class="empty" data-i="empty">No shifts recorded yet. Press “I'm here” to start.</div>
+</section>
+<div class="foot" data-i="privacy">Time Counter · Records are stored locally in this browser.</div>
+</main>
+<script>
+const translations={
+en:{tagline:"Simple staff attendance tracker",localNotice:"This first version saves records on this device only. It is not yet shared with your manager or coworkers.",currentTime:"Current time",notWorking:"Not on shift",working:"Currently working",clockIn:"I'm here",clockOut:"I'm leaving",noteLabel:"Note (optional)",notePlaceholder:"Add a note for this shift...",summary:"Work summary",today:"Today",thisMonth:"This month",history:"Attendance history",export:"Export CSV",empty:"No shifts recorded yet. Press “I'm here” to start.",privacy:"Time Counter · Records are stored locally in this browser.",started:"Started",finished:"Finished",ongoing:"In progress",total:"Total",confirmOut:"Clock out now?",already:"You are already on shift.",notStarted:"You have not clocked in.",csvDate:"Date",csvIn:"Clock in",csvOut:"Clock out",csvDuration:"Duration minutes",csvNote:"Note",monthNames:["January","February","March","April","May","June","July","August","September","October","November","December"]},
+ru:{tagline:"Простой учёт рабочего времени сотрудников",localNotice:"Первая версия сохраняет записи только на этом устройстве. Данные пока не доступны менеджеру и коллегам.",currentTime:"Текущее время",notWorking:"Сейчас не на смене",working:"Сейчас на смене",clockIn:"Я пришёл",clockOut:"Я ухожу",noteLabel:"Примечание (необязательно)",notePlaceholder:"Добавьте примечание к смене...",summary:"Сводка рабочего времени",today:"Сегодня",thisMonth:"В этом месяце",history:"История посещений",export:"Экспорт CSV",empty:"Записей пока нет. Нажмите «Я пришёл», чтобы начать.",privacy:"Time Counter · Записи хранятся локально в этом браузере.",started:"Начало",finished:"Окончание",ongoing:"В процессе",total:"Итого",confirmOut:"Отметить уход сейчас?",already:"Вы уже на смене.",notStarted:"Вы ещё не отметили приход.",csvDate:"Дата",csvIn:"Приход",csvOut:"Уход",csvDuration:"Длительность (мин)",csvNote:"Примечание",monthNames:["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"]}
+};
+let lang=localStorage.getItem("tc_lang")||"en";
+let shifts=JSON.parse(localStorage.getItem("tc_shifts")||"[]");
+const $=id=>document.getElementById(id);
+const t=k=>translations[lang][k];
+function save(){localStorage.setItem("tc_shifts",JSON.stringify(shifts));}
+function fmtTime(iso){return new Date(iso).toLocaleTimeString(lang==="ru"?"ru-RU":"en-GB",{hour:"2-digit",minute:"2-digit"});}
+function fmtDate(iso){return new Date(iso).toLocaleDateString(lang==="ru"?"ru-RU":"en-GB",{day:"2-digit",month:"short",year:"numeric"});}
+function duration(ms){let m=Math.max(0,Math.floor(ms/60000));return Math.floor(m/60)+"h "+String(m%60).padStart(2,"0")+"m";}
+function current(){return shifts.find(s=>!s.outAt);}
+function applyLang(){
+ document.documentElement.lang=lang;
+ document.querySelectorAll("[data-i]").forEach(el=>{let k=el.dataset.i;el.textContent=t(k)});
+ document.querySelectorAll("[data-i-placeholder]").forEach(el=>el.placeholder=t(el.dataset.iPlaceholder));
+ $("langBtn").textContent=lang==="en"?"РУС":"ENG";
+ render();
+}
+function render(){
+ const now=new Date();$("now").textContent=now.toLocaleTimeString(lang==="ru"?"ru-RU":"en-GB");
+ $("monthLabel").textContent=t("monthNames")[now.getMonth()]+" "+now.getFullYear();
+ const active=current();$("status").innerHTML='<span class="dot"></span><span>'+(active?t("working"):t("notWorking"))+'</span>';
+ $("inBtn").disabled=!!active;$("outBtn").disabled=!active;
+ const today=now.toDateString(),month=now.getMonth(),year=now.getFullYear();
+ let todayMs=0,monthMs=0;
+ shifts.forEach(s=>{let a=new Date(s.inAt),b=s.outAt?new Date(s.outAt):now,ms=Math.max(0,b-a);if(a.toDateString()===today)todayMs+=ms;if(a.getMonth()===month&&a.getFullYear()===year)monthMs+=ms;});
+ $("todayTotal").textContent=duration(todayMs);$("monthTotal").textContent=duration(monthMs);
+ const list=$("historyList");
+ if(!shifts.length){list.className="empty";list.textContent=t("empty");return;}
+ list.className="";
+ list.innerHTML=[...shifts].reverse().map(s=>{let ms=(s.outAt?new Date(s.outAt):now)-new Date(s.inAt);return `<div class="entry"><div class="entrytop"><span>${fmtDate(s.inAt)}</span><span class="hours">${duration(ms)}</span></div><div class="entrymeta">${t("started")}: ${fmtTime(s.inAt)} · ${t("finished")}: ${s.outAt?fmtTime(s.outAt):t("ongoing")}</div>${s.note?`<div class="entrymeta">${escapeHtml(s.note)}</div>`:""}</div>`}).join("");
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+$("inBtn").addEventListener("click",()=>{if(current()){alert(t("already"));return;}shifts.push({id:Date.now(),inAt:new Date().toISOString(),outAt:null,note:$("note").value.trim()});$("note").value="";save();render();});
+$("outBtn").addEventListener("click",()=>{let s=current();if(!s){alert(t("notStarted"));return;}if(!confirm(t("confirmOut")))return;s.outAt=new Date().toISOString();save();render();});
+$("langBtn").addEventListener("click",()=>{lang=lang==="en"?"ru":"en";localStorage.setItem("tc_lang",lang);applyLang();});
+$("exportBtn").addEventListener("click",()=>{let rows=[[t("csvDate"),t("csvIn"),t("csvOut"),t("csvDuration"),t("csvNote")],...shifts.map(s=>[fmtDate(s.inAt),fmtTime(s.inAt),s.outAt?fmtTime(s.outAt):"",Math.floor(((s.outAt?new Date(s.outAt):new Date())-new Date(s.inAt))/60000),s.note||""])];let csv="\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="time-counter-attendance.csv";a.click();URL.revokeObjectURL(a.href);});
+setInterval(render,1000);applyLang();
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script>
+</body>
+</html>
