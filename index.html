@@ -3,101 +3,163 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#10251f">
-<meta name="description" content="Time Counter — staff attendance and shift tracking">
+<meta name="theme-color" content="#17142f">
+<meta name="description" content="Time Counter — colourful staff attendance and shift tracker">
 <link rel="manifest" href="manifest.webmanifest">
 <title>Time Counter</title>
 <style>
-:root{--bg:#f3f6f4;--card:#fff;--ink:#17231e;--muted:#718078;--green:#16834b;--red:#c84b4b;--line:#e5ebe7;--dark:#10251f}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-header{background:var(--dark);color:white;padding:22px 18px 26px;border-radius:0 0 24px 24px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:23px;font-weight:800;letter-spacing:-.5px}.lang{background:#ffffff1c;color:#fff;border:1px solid #ffffff40;border-radius:12px;padding:9px 12px;font-weight:700}
-.sub{color:#c2d3ca;font-size:13px;margin-top:5px}.wrap{max-width:620px;margin:auto;padding:16px 14px 40px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 4px 16px #10251f08}
-.label{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.07em;text-transform:uppercase}
-.clock{font-size:42px;font-weight:800;letter-spacing:-1.5px;margin:6px 0 0;font-variant-numeric:tabular-nums}
-.status{display:inline-flex;align-items:center;gap:7px;border-radius:99px;padding:7px 11px;font-size:13px;font-weight:700;background:#e9f6ee;color:#167342;margin-top:10px}
-.dot{width:7px;height:7px;border-radius:50%;background:currentColor}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}
-button{font:inherit;cursor:pointer}.action{border:0;border-radius:14px;padding:16px 10px;font-weight:800;color:white;background:var(--green);min-height:56px}.action.out{background:var(--red)}.action:disabled{opacity:.35;cursor:not-allowed}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#f7faf8;border-radius:14px;padding:13px}.stat strong{display:block;font-size:23px;font-variant-numeric:tabular-nums}.stat span{font-size:12px;color:var(--muted)}
-.sectionhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.sectionhead h2{font-size:17px;margin:0}.smallbtn{border:1px solid var(--line);background:white;border-radius:10px;padding:8px 10px;font-weight:700;color:var(--ink)}
-.entry{padding:13px 0;border-top:1px solid var(--line)}.entry:first-child{border-top:0}.entrytop{display:flex;justify-content:space-between;gap:8px;font-weight:700}.entrymeta{color:var(--muted);font-size:13px;margin-top:5px}.hours{color:var(--green);font-weight:800;white-space:nowrap}
-input,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;background:#fff;color:var(--ink)}textarea{resize:vertical;min-height:70px}.field{margin-top:12px}.field label{display:block;font-size:13px;color:var(--muted);font-weight:700;margin-bottom:6px}
-.empty{text-align:center;color:var(--muted);padding:20px 8px;font-size:14px}.foot{text-align:center;color:var(--muted);font-size:12px;padding:8px}
-.notice{background:#fff7e6;border:1px solid #f1dfb7;border-radius:12px;padding:12px;color:#79551b;font-size:13px;line-height:1.45;margin-bottom:14px}
-@media(min-width:560px){.wrap{padding-top:22px}.clock{font-size:50px}}
+:root{--bg:#f5f4fb;--ink:#211d3a;--muted:#89859e;--purple:#7657e8;--pink:#ed6eaa;--cyan:#48c7d8;--orange:#ffad62;--green:#35b987;--red:#ed6b73;--card:#fff;--line:#eeeaf6;--shadow:0 12px 35px #3c286510}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+button,input,textarea{font:inherit}button{cursor:pointer}
+.app{max-width:1100px;margin:auto;padding:0 14px 38px}
+header{margin:0 -14px 18px;padding:22px 18px 26px;background:linear-gradient(125deg,#21194d 0%,#573ec0 56%,#a34ca9 100%);color:white;border-radius:0 0 28px 28px;position:relative;overflow:hidden}
+header:before,header:after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+header:before{width:190px;height:190px;right:-45px;top:-90px;background:#ffffff12}
+header:after{width:115px;height:115px;right:105px;bottom:-75px;background:#ff9fc42b}
+.top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:24px;font-weight:850;letter-spacing:-.8px}.brand small{display:block;font-size:11px;font-weight:500;letter-spacing:.3px;color:#ded8ff;margin-top:1px}
+.lang{border:1px solid #ffffff55;background:#ffffff1c;color:white;border-radius:13px;padding:9px 12px;font-weight:800}
+.greeting{position:relative;z-index:1;margin-top:24px}.greeting .hello{font-size:13px;color:#e0d9ff}.greeting h1{font-size:25px;line-height:1.1;margin:4px 0 7px;letter-spacing:-.7px}.greeting p{margin:0;color:#e3dcff;font-size:13px}
+.notice{margin:0 0 15px;background:#fff6e9;border:1px solid #ffe2b6;color:#815b23;border-radius:14px;padding:11px 13px;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:13px}.span12{grid-column:span 12}.span8{grid-column:span 8}.span7{grid-column:span 7}.span6{grid-column:span 6}.span5{grid-column:span 5}.span4{grid-column:span 4}
+.card{background:var(--card);border:1px solid #eeeaf7;border-radius:21px;padding:17px;box-shadow:var(--shadow);animation:rise .55s both;transition:transform .22s,box-shadow .22s}.card:hover{transform:translateY(-2px);box-shadow:0 16px 36px #3c28651b}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cardhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:13px}.cardhead h2{font-size:16px;margin:0;letter-spacing:-.2px}.muted{color:var(--muted)}.tiny{font-size:11px;color:var(--muted)}
+.pill{border-radius:99px;padding:6px 10px;font-size:11px;font-weight:800;background:#f0edff;color:#6a50ce;white-space:nowrap}.pill.green{background:#e6f8f1;color:#21966b}.pill.orange{background:#fff1e3;color:#c67a2e}.pill.pink{background:#fff0f6;color:#cf5590}
+.clockcard{background:linear-gradient(135deg,#fff 0%,#f4f0ff 100%);position:relative;overflow:hidden}.clockcard:after{content:"";position:absolute;width:155px;height:155px;right:-70px;top:-70px;border-radius:50%;background:#dcd2ff88}
+.clockrow{display:flex;justify-content:space-between;align-items:center;gap:12px;position:relative;z-index:1}.time{font-size:38px;line-height:1.1;font-weight:850;letter-spacing:-1.7px;font-variant-numeric:tabular-nums}.date{font-size:12px;color:var(--muted);margin-top:6px}
+.live{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:800;color:#23956c;background:#e6f8f1;border-radius:99px;padding:8px 11px}.pulse{width:7px;height:7px;background:#32bd85;border-radius:50%;box-shadow:0 0 0 0 #32bd8570;animation:pulse 1.7s infinite}@keyframes pulse{70%{box-shadow:0 0 0 8px #32bd8500}}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px;position:relative;z-index:1}.btn{border:0;border-radius:14px;padding:14px 9px;font-weight:850;color:#fff;box-shadow:0 7px 15px #7657e833;transition:transform .18s,filter .18s}.btn:active{transform:scale(.97)}.btn:disabled{opacity:.35;filter:grayscale(.5);box-shadow:none;cursor:not-allowed}.in{background:linear-gradient(110deg,#7657e8,#9b69ed)}.out{background:linear-gradient(110deg,#ee719e,#e75c83)}.break{background:linear-gradient(110deg,#ffae65,#f28b57);grid-column:span 2}.miniStats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.mini{background:#fff;border:1px solid #eeeaf7;border-radius:14px;padding:10px}.mini strong{display:block;font-size:17px;font-weight:850}.mini span{font-size:10px;color:var(--muted)}
+.metric{display:flex;align-items:center;gap:12px}.bubble{width:43px;height:43px;border-radius:15px;display:grid;place-items:center;font-size:20px;flex-shrink:0}.b-purple{background:#eee9ff}.b-pink{background:#fff0f6}.b-cyan{background:#e7faff}.b-orange{background:#fff2e5}.b-green{background:#e5f8f0}.metric strong{font-size:22px;display:block;letter-spacing:-.5px}.metric span{font-size:11px;color:var(--muted)}
+.progress{height:9px;border-radius:99px;background:#f0edf7;overflow:hidden;margin-top:14px}.progress i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7657e8,#ed75ac);transition:width .5s}
+.chart{height:135px;display:flex;align-items:end;gap:9px;padding:10px 2px 0}.barcol{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:6px;min-width:0}.bar{width:min(26px,75%);min-height:4px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#aa8cf4,#7356e5);transition:height .6s cubic-bezier(.2,.8,.2,1)}.barcol:nth-child(2n) .bar{background:linear-gradient(180deg,#ffacd0,#ed6eaa)}.barcol:nth-child(3n) .bar{background:linear-gradient(180deg,#82deea,#41bdcf)}.barcol label{font-size:10px;color:var(--muted)}
+.calendarTop{display:flex;align-items:center;gap:8px}.calnav{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 10px;color:var(--ink);font-weight:800}.monthname{font-size:14px;font-weight:850;min-width:115px;text-align:center}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.weekday{text-align:center;font-size:10px;font-weight:800;color:var(--muted);padding:5px 0}.day{border:0;background:#faf9fd;border-radius:11px;min-height:43px;padding:5px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink);transition:transform .18s,background .18s}.day:active{transform:scale(.92)}.day.empty{background:transparent}.day.today{outline:2px solid #9a80ed;background:#f2edff}.day.has{background:#e5f8f0;color:#238d68}.day.partial{background:#fff1e4;color:#bb7a34}.day .num{font-size:12px;font-weight:800}.day .mark{width:5px;height:5px;border-radius:50%;background:currentColor}.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:11px}.legend span{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}.legend i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.history{max-height:390px;overflow:auto}.shift{display:flex;align-items:center;justify-content:space-between;gap:9px;padding:12px 0;border-top:1px solid #f0edf5}.shift:first-child{border-top:0}.shiftdate{font-size:13px;font-weight:850}.shiftmeta{font-size:11px;color:var(--muted);margin-top:3px}.shiftval{text-align:right;font-size:13px;font-weight:850;color:#7657e8;white-space:nowrap}.shiftval small{display:block;font-size:10px;color:var(--muted);font-weight:500}
+.noteInput{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;background:#fff;color:var(--ink);margin-top:12px;resize:vertical;min-height:48px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}.toolbtn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:11px;padding:9px 11px;font-size:11px;font-weight:800}
+.empty{text-align:center;color:var(--muted);padding:20px 5px;font-size:12px}
+footer{text-align:center;color:#aaa5b8;font-size:10px;padding:17px}
+@media(max-width:680px){.span8,.span7,.span6,.span5,.span4{grid-column:span 12}.app{padding:0 12px 30px}header{margin:0 -12px 14px}.time{font-size:34px}.card{padding:15px}.calendar{gap:4px}.day{min-height:39px}}
 </style>
 </head>
 <body>
-<header><div class="top"><div><div class="brand">⏱ Time Counter</div><div class="sub" data-i="tagline">Simple staff attendance tracker</div></div><button class="lang" id="langBtn">РУС</button></div></header>
-<main class="wrap">
-<div class="notice" data-i="localNotice">This first version saves records on this device only. It is not yet shared with your manager or coworkers.</div>
-<section class="card">
- <div class="label" data-i="currentTime">Current time</div>
- <div class="clock" id="now">--:--:--</div>
- <div class="status" id="status"><span class="dot"></span><span data-i="notWorking">Not on shift</span></div>
- <div class="actions">
-  <button class="action" id="inBtn" data-i="clockIn">I'm here</button>
-  <button class="action out" id="outBtn" data-i="clockOut" disabled>I'm leaving</button>
- </div>
- <div class="field"><label for="note" data-i="noteLabel">Note (optional)</label><textarea id="note" data-i-placeholder="notePlaceholder" placeholder="Add a note for this shift..."></textarea></div>
+<div class="app">
+<header>
+ <div class="top"><div class="brand">✦ Time Counter<small data-i="subtitle">YOUR WORKDAY, BEAUTIFULLY TRACKED</small></div><button class="lang" id="langBtn">РУС</button></div>
+ <div class="greeting"><div class="hello" data-i="hello">HELLO THERE 👋</div><h1 data-i="welcome">Make every hour count.</h1><p data-i="headerText">Your shifts, your progress, all in one place.</p></div>
+</header>
+<div class="notice" data-i="localNotice">Prototype notice: attendance is stored only in this browser on this device. It is not yet shared with coworkers or a manager.</div>
+<div class="grid">
+<section class="card clockcard span7">
+ <div class="cardhead"><h2 data-i="yourShift">Your shift</h2><span class="pill" id="shiftPill">READY</span></div>
+ <div class="clockrow"><div><div class="time" id="now">--:--:--</div><div class="date" id="todayDate">—</div></div><div class="live" id="liveStatus"><span class="pulse"></span><span data-i="offShift">Off shift</span></div></div>
+ <div class="buttons"><button class="btn in" id="inBtn" data-i="clockIn">↗ Clock in</button><button class="btn out" id="outBtn" data-i="clockOut" disabled>↙ Clock out</button><button class="btn break" id="breakBtn" data-i="breakStart" disabled>☕ Start break</button></div>
+ <textarea class="noteInput" id="note" data-i-placeholder="notePlaceholder" placeholder="Add a note for this shift (optional)"></textarea>
+ <div class="miniStats"><div class="mini"><strong id="liveDuration">0h 00m</strong><span data-i="elapsed">ELAPSED</span></div><div class="mini"><strong id="breakDuration">0m</strong><span data-i="breakTime">BREAK TIME</span></div><div class="mini"><strong id="shiftCount">0</strong><span data-i="shiftsThisMonth">SHIFTS THIS MONTH</span></div></div>
 </section>
-<section class="card">
- <div class="sectionhead"><h2 data-i="summary">Work summary</h2><span class="label" id="monthLabel"></span></div>
- <div class="grid">
-  <div class="stat"><strong id="todayTotal">0h 00m</strong><span data-i="today">Today</span></div>
-  <div class="stat"><strong id="monthTotal">0h 00m</strong><span data-i="thisMonth">This month</span></div>
- </div>
+<section class="card span5">
+ <div class="cardhead"><h2 data-i="monthlyGoal">Monthly goal</h2><span class="pill pink" data-i="progress">PROGRESS</span></div>
+ <div class="metric"><div class="bubble b-purple">🎯</div><div><strong id="goalHours">0 / 160h</strong><span data-i="hoursWorked">Hours worked this month</span></div></div>
+ <div class="progress"><i id="goalBar" style="width:0%"></i></div>
+ <div class="tiny" style="margin-top:10px" id="goalCaption">0% of your monthly goal</div>
+ <div style="height:15px"></div>
+ <div class="metric"><div class="bubble b-pink">✨</div><div><strong id="avgHours">0h</strong><span data-i="averageShift">Average shift length</span></div></div>
 </section>
-<section class="card">
- <div class="sectionhead"><h2 data-i="history">Attendance history</h2><button class="smallbtn" id="exportBtn" data-i="export">Export CSV</button></div>
- <div id="historyList" class="empty" data-i="empty">No shifts recorded yet. Press “I'm here” to start.</div>
+<section class="card span4">
+ <div class="cardhead"><h2 data-i="todayCard">Today</h2><span class="pill green">● LIVE</span></div>
+ <div class="metric"><div class="bubble b-cyan">⏱️</div><div><strong id="todayHours">0h 00m</strong><span data-i="todayWorked">Time worked today</span></div></div>
 </section>
-<div class="foot" data-i="privacy">Time Counter · Records are stored locally in this browser.</div>
-</main>
+<section class="card span4">
+ <div class="cardhead"><h2 data-i="thisMonthCard">This month</h2><span class="pill">📅 MONTH</span></div>
+ <div class="metric"><div class="bubble b-orange">🔥</div><div><strong id="monthHours">0h 00m</strong><span data-i="monthWorked">Total hours worked</span></div></div>
+</section>
+<section class="card span4">
+ <div class="cardhead"><h2 data-i="attendanceCard">Attendance</h2><span class="pill pink">★</span></div>
+ <div class="metric"><div class="bubble b-green">✅</div><div><strong id="attendanceDays">0 days</strong><span data-i="daysWorked">Days worked this month</span></div></div>
+</section>
+<section class="card span6">
+ <div class="cardhead"><h2 data-i="weeklyActivity">Weekly activity</h2><span class="pill">LAST 7 DAYS</span></div>
+ <div class="chart" id="weekChart"></div>
+</section>
+<section class="card span6">
+ <div class="cardhead"><h2 data-i="calendarTitle">Monthly calendar</h2><div class="calendarTop"><button class="calnav" id="prevMonth">‹</button><span class="monthname" id="calendarMonth">—</span><button class="calnav" id="nextMonth">›</button></div></div>
+ <div class="calendar" id="calendar"></div>
+ <div class="legend"><span><i style="background:#35b987"></i><span data-i="workedLegend">Worked</span></span><span><i style="background:#ffad62"></i><span data-i="activeLegend">In progress</span></span><span><i style="background:#9a80ed"></i><span data-i="todayLegend">Today</span></span></div>
+</section>
+<section class="card span12">
+ <div class="cardhead"><h2 data-i="historyTitle">Full shift history</h2><div class="tools"><button class="toolbtn" id="exportBtn" data-i="export">↓ Export CSV</button><button class="toolbtn" id="clearBtn" data-i="clear">Clear history</button></div></div>
+ <div class="history" id="history"><div class="empty" data-i="empty">Your shifts will appear here after you clock in.</div></div>
+</section>
+</div>
+<footer>✦ Time Counter · <span data-i="footer">A brighter way to track your workday.</span></footer>
+</div>
 <script>
-const translations={
-en:{tagline:"Simple staff attendance tracker",localNotice:"This first version saves records on this device only. It is not yet shared with your manager or coworkers.",currentTime:"Current time",notWorking:"Not on shift",working:"Currently working",clockIn:"I'm here",clockOut:"I'm leaving",noteLabel:"Note (optional)",notePlaceholder:"Add a note for this shift...",summary:"Work summary",today:"Today",thisMonth:"This month",history:"Attendance history",export:"Export CSV",empty:"No shifts recorded yet. Press “I'm here” to start.",privacy:"Time Counter · Records are stored locally in this browser.",started:"Started",finished:"Finished",ongoing:"In progress",total:"Total",confirmOut:"Clock out now?",already:"You are already on shift.",notStarted:"You have not clocked in.",csvDate:"Date",csvIn:"Clock in",csvOut:"Clock out",csvDuration:"Duration minutes",csvNote:"Note",monthNames:["January","February","March","April","May","June","July","August","September","October","November","December"]},
-ru:{tagline:"Простой учёт рабочего времени сотрудников",localNotice:"Первая версия сохраняет записи только на этом устройстве. Данные пока не доступны менеджеру и коллегам.",currentTime:"Текущее время",notWorking:"Сейчас не на смене",working:"Сейчас на смене",clockIn:"Я пришёл",clockOut:"Я ухожу",noteLabel:"Примечание (необязательно)",notePlaceholder:"Добавьте примечание к смене...",summary:"Сводка рабочего времени",today:"Сегодня",thisMonth:"В этом месяце",history:"История посещений",export:"Экспорт CSV",empty:"Записей пока нет. Нажмите «Я пришёл», чтобы начать.",privacy:"Time Counter · Записи хранятся локально в этом браузере.",started:"Начало",finished:"Окончание",ongoing:"В процессе",total:"Итого",confirmOut:"Отметить уход сейчас?",already:"Вы уже на смене.",notStarted:"Вы ещё не отметили приход.",csvDate:"Дата",csvIn:"Приход",csvOut:"Уход",csvDuration:"Длительность (мин)",csvNote:"Примечание",monthNames:["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"]}
+const tr={
+en:{subtitle:"YOUR WORKDAY, BEAUTIFULLY TRACKED",hello:"HELLO THERE 👋",welcome:"Make every hour count.",headerText:"Your shifts, your progress, all in one place.",localNotice:"Prototype notice: attendance is stored only in this browser on this device. It is not yet shared with coworkers or a manager.",yourShift:"Your shift",offShift:"Off shift",working:"On shift",ready:"READY",onBreak:"ON BREAK",clockIn:"↗ Clock in",clockOut:"↙ Clock out",breakStart:"☕ Start break",breakEnd:"▶ End break",notePlaceholder:"Add a note for this shift (optional)",elapsed:"ELAPSED",breakTime:"BREAK TIME",shiftsThisMonth:"SHIFTS THIS MONTH",monthlyGoal:"Monthly goal",progress:"PROGRESS",hoursWorked:"Hours worked this month",averageShift:"Average shift length",todayCard:"Today",todayWorked:"Time worked today",thisMonthCard:"This month",monthWorked:"Total hours worked",attendanceCard:"Attendance",daysWorked:"Days worked this month",weeklyActivity:"Weekly activity",calendarTitle:"Monthly calendar",workedLegend:"Worked",activeLegend:"In progress",todayLegend:"Today",historyTitle:"Full shift history",export:"↓ Export CSV",clear:"Clear history",empty:"Your shifts will appear here after you clock in.",footer:"A brighter way to track your workday.",days:"days",goalText:"of your monthly goal",started:"In",ended:"Out",ongoing:"In progress",breaks:"Breaks",confirmClear:"Delete all attendance records from this device?",confirmOut:"Clock out now?",monthNames:["January","February","March","April","May","June","July","August","September","October","November","December"],week:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],csvDate:"Date",csvIn:"Clock in",csvOut:"Clock out",csvMinutes:"Worked minutes",csvBreak:"Break minutes",csvNote:"Note",clocked:"Clocked in successfully!",breakStarted:"Break started",breakEnded:"Break ended",clockedOut:"Clocked out successfully!"},
+ru:{subtitle:"КРАСИВЫЙ УЧЁТ ВАШЕГО РАБОЧЕГО ДНЯ",hello:"ПРИВЕТ 👋",welcome:"Каждый час имеет значение.",headerText:"Ваши смены и достижения — в одном месте.",localNotice:"Внимание: записи хранятся только в этом браузере на данном устройстве. Они пока не доступны коллегам или менеджеру.",yourShift:"Ваша смена",offShift:"Не на смене",working:"На смене",ready:"ГОТОВ",onBreak:"ПЕРЕРЫВ",clockIn:"↗ Начать смену",clockOut:"↙ Завершить смену",breakStart:"☕ Начать перерыв",breakEnd:"▶ Завершить перерыв",notePlaceholder:"Добавьте примечание к смене (необязательно)",elapsed:"ПРОШЛО",breakTime:"ВРЕМЯ ПЕРЕРЫВА",shiftsThisMonth:"СМЕН В ЭТОМ МЕСЯЦЕ",monthlyGoal:"Цель на месяц",progress:"ПРОГРЕСС",hoursWorked:"Часов отработано за месяц",averageShift:"Средняя длительность смены",todayCard:"Сегодня",todayWorked:"Отработано сегодня",thisMonthCard:"Этот месяц",monthWorked:"Всего отработано часов",attendanceCard:"Посещаемость",daysWorked:"Рабочих дней в этом месяце",weeklyActivity:"Активность за неделю",calendarTitle:"Календарь месяца",workedLegend:"Отработано",activeLegend:"В процессе",todayLegend:"Сегодня",historyTitle:"Полная история смен",export:"↓ Экспорт CSV",clear:"Очистить историю",empty:"Ваши смены появятся здесь после начала работы.",footer:"Более яркий способ учитывать рабочее время.",days:"дн.",goalText:"от месячной цели",started:"Приход",ended:"Уход",ongoing:"В процессе",breaks:"Перерывы",confirmClear:"Удалить все записи посещений с этого устройства?",confirmOut:"Завершить смену сейчас?",monthNames:["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"],week:["Вс","Пн","Вт","Ср","Чт","Пт","Сб"],csvDate:"Дата",csvIn:"Приход",csvOut:"Уход",csvMinutes:"Отработано минут",csvBreak:"Минуты перерыва",csvNote:"Примечание",clocked:"Начало смены записано!",breakStarted:"Перерыв начат",breakEnded:"Перерыв завершён",clockedOut:"Окончание смены записано!"}
 };
 let lang=localStorage.getItem("tc_lang")||"en";
 let shifts=JSON.parse(localStorage.getItem("tc_shifts")||"[]");
-const $=id=>document.getElementById(id);
-const t=k=>translations[lang][k];
+let viewDate=new Date();
+const $=id=>document.getElementById(id), t=k=>tr[lang][k];
 function save(){localStorage.setItem("tc_shifts",JSON.stringify(shifts));}
-function fmtTime(iso){return new Date(iso).toLocaleTimeString(lang==="ru"?"ru-RU":"en-GB",{hour:"2-digit",minute:"2-digit"});}
-function fmtDate(iso){return new Date(iso).toLocaleDateString(lang==="ru"?"ru-RU":"en-GB",{day:"2-digit",month:"short",year:"numeric"});}
-function duration(ms){let m=Math.max(0,Math.floor(ms/60000));return Math.floor(m/60)+"h "+String(m%60).padStart(2,"0")+"m";}
 function current(){return shifts.find(s=>!s.outAt);}
-function applyLang(){
+function mins(ms){return Math.max(0,Math.floor(ms/60000));}
+function duration(ms){let m=mins(ms);return Math.floor(m/60)+"h "+String(m%60).padStart(2,"0")+"m";}
+function fmtTime(iso){return new Date(iso).toLocaleTimeString(lang==="ru"?"ru-RU":"en-GB",{hour:"2-digit",minute:"2-digit"});}
+function fmtDate(iso){return new Date(iso).toLocaleDateString(lang==="ru"?"ru-RU":"en-GB",{day:"numeric",month:"short",year:"numeric"});}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function breakMs(s,now=new Date()){return (s.breaks||[]).reduce((sum,b)=>sum+(b.end?new Date(b.end)-new Date(b.start):now-new Date(b.start)),0);}
+function workMs(s,now=new Date()){return Math.max(0,(s.outAt?new Date(s.outAt):now)-new Date(s.inAt)-breakMs(s,now));}
+function monthShifts(y,m){return shifts.filter(s=>{let d=new Date(s.inAt);return d.getFullYear()===y&&d.getMonth()===m;});}
+function setLang(){
  document.documentElement.lang=lang;
- document.querySelectorAll("[data-i]").forEach(el=>{let k=el.dataset.i;el.textContent=t(k)});
+ document.querySelectorAll("[data-i]").forEach(el=>el.textContent=t(el.dataset.i));
  document.querySelectorAll("[data-i-placeholder]").forEach(el=>el.placeholder=t(el.dataset.iPlaceholder));
- $("langBtn").textContent=lang==="en"?"РУС":"ENG";
- render();
+ $("langBtn").textContent=lang==="en"?"РУС":"ENG";render();
 }
 function render(){
- const now=new Date();$("now").textContent=now.toLocaleTimeString(lang==="ru"?"ru-RU":"en-GB");
- $("monthLabel").textContent=t("monthNames")[now.getMonth()]+" "+now.getFullYear();
- const active=current();$("status").innerHTML='<span class="dot"></span><span>'+(active?t("working"):t("notWorking"))+'</span>';
- $("inBtn").disabled=!!active;$("outBtn").disabled=!active;
- const today=now.toDateString(),month=now.getMonth(),year=now.getFullYear();
- let todayMs=0,monthMs=0;
- shifts.forEach(s=>{let a=new Date(s.inAt),b=s.outAt?new Date(s.outAt):now,ms=Math.max(0,b-a);if(a.toDateString()===today)todayMs+=ms;if(a.getMonth()===month&&a.getFullYear()===year)monthMs+=ms;});
- $("todayTotal").textContent=duration(todayMs);$("monthTotal").textContent=duration(monthMs);
- const list=$("historyList");
- if(!shifts.length){list.className="empty";list.textContent=t("empty");return;}
- list.className="";
- list.innerHTML=[...shifts].reverse().map(s=>{let ms=(s.outAt?new Date(s.outAt):now)-new Date(s.inAt);return `<div class="entry"><div class="entrytop"><span>${fmtDate(s.inAt)}</span><span class="hours">${duration(ms)}</span></div><div class="entrymeta">${t("started")}: ${fmtTime(s.inAt)} · ${t("finished")}: ${s.outAt?fmtTime(s.outAt):t("ongoing")}</div>${s.note?`<div class="entrymeta">${escapeHtml(s.note)}</div>`:""}</div>`}).join("");
+ const now=new Date(),active=current();
+ $("now").textContent=now.toLocaleTimeString(lang==="ru"?"ru-RU":"en-GB");
+ $("todayDate").textContent=now.toLocaleDateString(lang==="ru"?"ru-RU":"en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+ $("liveStatus").innerHTML='<span class="pulse"></span><span>'+(active?(active.breaks||[]).some(b=>!b.end)?t("onBreak"):t("working"):t("offShift"))+'</span>';
+ $("shiftPill").textContent=active?((active.breaks||[]).some(b=>!b.end)?t("onBreak"):t("working").toUpperCase()):t("ready");
+ $("inBtn").disabled=!!active;$("outBtn").disabled=!active;$("breakBtn").disabled=!active;
+ $("breakBtn").textContent=active&& (active.breaks||[]).some(b=>!b.end)?t("breakEnd"):t("breakStart");
+ const thisMonth=monthShifts(now.getFullYear(),now.getMonth());
+ const todayMs=shifts.filter(s=>new Date(s.inAt).toDateString()===now.toDateString()).reduce((a,s)=>a+workMs(s,now),0);
+ const monthMs=thisMonth.reduce((a,s)=>a+workMs(s,now),0),days=new Set(thisMonth.map(s=>new Date(s.inAt).toDateString())).size;
+ $("todayHours").textContent=duration(todayMs);$("monthHours").textContent=duration(monthMs);$("attendanceDays").textContent=days+" "+t("days");$("shiftCount").textContent=thisMonth.length;
+ $("liveDuration").textContent=active?duration(workMs(active,now)):"0h 00m";$("breakDuration").textContent=active?mins(breakMs(active,now))+"m":"0m";
+ const goal=160,pct=Math.min(100,Math.round(monthMs/3600000/goal*100));$("goalHours").textContent=(monthMs/3600000).toFixed(1)+" / "+goal+"h";$("goalBar").style.width=pct+"%";$("goalCaption").textContent=pct+"% "+t("goalText");
+ const closed=thisMonth.filter(s=>s.outAt);$("avgHours").textContent=closed.length?duration(closed.reduce((a,s)=>a+workMs(s),0)/closed.length):"0h";
+ renderChart(now);renderCalendar();renderHistory();
 }
-function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-$("inBtn").addEventListener("click",()=>{if(current()){alert(t("already"));return;}shifts.push({id:Date.now(),inAt:new Date().toISOString(),outAt:null,note:$("note").value.trim()});$("note").value="";save();render();});
-$("outBtn").addEventListener("click",()=>{let s=current();if(!s){alert(t("notStarted"));return;}if(!confirm(t("confirmOut")))return;s.outAt=new Date().toISOString();save();render();});
-$("langBtn").addEventListener("click",()=>{lang=lang==="en"?"ru":"en";localStorage.setItem("tc_lang",lang);applyLang();});
-$("exportBtn").addEventListener("click",()=>{let rows=[[t("csvDate"),t("csvIn"),t("csvOut"),t("csvDuration"),t("csvNote")],...shifts.map(s=>[fmtDate(s.inAt),fmtTime(s.inAt),s.outAt?fmtTime(s.outAt):"",Math.floor(((s.outAt?new Date(s.outAt):new Date())-new Date(s.inAt))/60000),s.note||""])];let csv="\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="time-counter-attendance.csv";a.click();URL.revokeObjectURL(a.href);});
-setInterval(render,1000);applyLang();
-if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+function renderChart(now){
+ const root=$("weekChart");root.innerHTML="";
+ for(let i=6;i>=0;i--){let d=new Date(now);d.setDate(d.getDate()-i);let total=shifts.filter(s=>new Date(s.inAt).toDateString()===d.toDateString()).reduce((a,s)=>a+workMs(s,now),0)/3600000;let col=document.createElement("div");col.className="barcol";col.innerHTML=`<div class="bar" style="height:${Math.max(4,Math.min(100,total/12*100))}%"></div><label>${d.toLocaleDateString(lang==="ru"?"ru-RU":"en-GB",{weekday:"short"}).slice(0,2)}</label>`;col.title=total.toFixed(1)+"h";root.appendChild(col);}
+}
+function renderCalendar(){
+ const y=viewDate.getFullYear(),m=viewDate.getMonth(),first=new Date(y,m,1).getDay(),daysIn=new Date(y,m+1,0).getDate(),today=new Date();
+ $("calendarMonth").textContent=t("monthNames")[m]+" "+y;
+ const root=$("calendar");root.innerHTML="";
+ tr[lang].week.forEach(w=>{let el=document.createElement("div");el.className="weekday";el.textContent=w;root.appendChild(el);});
+ for(let i=0;i<first;i++){let e=document.createElement("div");e.className="day empty";root.appendChild(e);}
+ for(let n=1;n<=daysIn;n++){let d=new Date(y,m,n),matching=shifts.filter(s=>new Date(s.inAt).toDateString()===d.toDateString()),active=matching.some(s=>!s.outAt),worked=matching.length>0;let b=document.createElement("button");b.className="day"+(worked?(active?" partial":" has"):"")+(d.toDateString()===today.toDateString()?" today":"");b.innerHTML=`<span class="num">${n}</span>${worked?'<i class="mark"></i>':""}`;b.title=matching.length?matching.length+" shift(s)":"";b.onclick=()=>{let rec=matching.map(s=>fmtTime(s.inAt)+" – "+(s.outAt?fmtTime(s.outAt):t("ongoing"))+" · "+duration(workMs(s)));alert(rec.length?fmtDate(d.toISOString())+"\n"+rec.join("\n"):"No shift recorded for this day.");};root.appendChild(b);}
+}
+function renderHistory(){
+ const root=$("history");let sorted=[...shifts].sort((a,b)=>new Date(b.inAt)-new Date(a.inAt));
+ if(!sorted.length){root.innerHTML=`<div class="empty">${t("empty")}</div>`;return;}
+ root.innerHTML=sorted.map(s=>`<div class="shift"><div><div class="shiftdate">${fmtDate(s.inAt)}</div><div class="shiftmeta">${t("started")}: ${fmtTime(s.inAt)} · ${t("ended")}: ${s.outAt?fmtTime(s.outAt):t("ongoing")}${(s.breaks||[]).length?" · "+t("breaks")+": "+s.breaks.length:""}</div>${s.note?`<div class="shiftmeta">${esc(s.note)}</div>`:""}</div><div class="shiftval">${duration(workMs(s))}<small>${s.outAt?t("ended"):t("ongoing")}</small></div></div>`).join("");
+}
+$("inBtn").onclick=()=>{if(current())return;shifts.push({id:Date.now(),inAt:new Date().toISOString(),outAt:null,note:$("note").value.trim(),breaks:[]});$("note").value="";save();render();};
+$("outBtn").onclick=()=>{let s=current();if(!s)return;if(!confirm(t("confirmOut")))return;let b=(s.breaks||[]).find(x=>!x.end);if(b)b.end=new Date().toISOString();s.outAt=new Date().toISOString();save();render();};
+$("breakBtn").onclick=()=>{let s=current();if(!s)return;s.breaks=s.breaks||[];let b=s.breaks.find(x=>!x.end);if(b)b.end=new Date().toISOString();else s.breaks.push({start:new Date().toISOString(),end:null});save();render();};
+$("langBtn").onclick=()=>{lang=lang==="en"?"ru":"en";localStorage.setItem("tc_lang",lang);setLang();};
+$("prevMonth").onclick=()=>{viewDate.setMonth(viewDate.getMonth()-1);renderCalendar();};
+$("nextMonth").onclick=()=>{viewDate.setMonth(viewDate.getMonth()+1);renderCalendar();};
+$("exportBtn").onclick=()=>{let rows=[[t("csvDate"),t("csvIn"),t("csvOut"),t("csvMinutes"),t("csvBreak"),t("csvNote")],...shifts.map(s=>[fmtDate(s.inAt),fmtTime(s.inAt),s.outAt?fmtTime(s.outAt):"",mins(workMs(s)),mins(breakMs(s)),s.note||""])];let csv="\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="time-counter-history.csv";a.click();URL.revokeObjectURL(a.href);};
+$("clearBtn").onclick=()=>{if(confirm(t("confirmClear"))){shifts=[];save();render();}};
+setInterval(render,1000);setLang();
+if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
 </script>
-</body>
-</html>
+</body></html>
